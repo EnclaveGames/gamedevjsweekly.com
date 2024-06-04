@@ -3,8 +3,8 @@ import { parse } from 'node-html-parser'
 import fs        from 'node:fs'
 import { Sema }  from 'async-sema'
 
-import { getArchive } from '../core/archive'
-import Layout         from '../layouts/Layout.astro'
+import archive from '../data/archive'
+import Layout  from '../layouts/Layout.astro'
 
 export async function getStaticPaths() {
   function preclean(src) {
@@ -40,7 +40,6 @@ export async function getStaticPaths() {
   }
 
   const
-    src = await getArchive(),
     dst = [],
     sem = new Sema(
       4,
@@ -49,16 +48,16 @@ export async function getStaticPaths() {
       }
   )
 
-  for (let i = 0; i < src.length; i++) {
+  for (let i = 0; i < archive.length; i++) {
     const
-      data = src[i],
+      data = archive[i],
       path = '.cache/' + data.i +'.html'
 
     try {
       dst.push(entry(data, fs.readFileSync(path)))
     } catch (_) {
       dst.push(sem.acquire().then(async _ => {
-        const response = await fetch('https://us3.api.mailchimp.com/3.0/campaigns/' + data.id + '/content?fields=archive_html', {
+        const res = await fetch('https://us3.api.mailchimp.com/3.0/campaigns/' + data.id + '/content?fields=archive_html', {
           headers: {
             Authorization: import.meta.env.MAILCHIMP_AUTH
           }
@@ -66,12 +65,14 @@ export async function getStaticPaths() {
 
         sem.release()
 
-        if (!response.ok) {
-          throw new Error(response.status + ': ' + await response.text())
+        if (!res.ok) {
+          throw new Error(res.status + ': ' + await res.text())
         }
 
-        const body = preclean((await response.json()).archive_html)
+        const body = preclean((await res.json()).archive_html)
 
+        // There's a template change at issue #542 and content is no longer uniquely targetable,
+        // which requires a split approach.
         let root
         if (data.i < 542) {
           root = parse(body).querySelector('.bodyContent div')
@@ -79,8 +80,6 @@ export async function getStaticPaths() {
             throw new Error('Failed to parse ' + data.i + ' | ' + data.id)
           }
         } else {
-          // Ender decided to change up the template here, but didn't take into account that the content is no longer
-          // uniquely targetable.
           let parents = parse(body).querySelectorAll('.mcnTextContent')
           if (parents.length !== 3) {
             throw new Error('Failed to parse ' + data.i + ' | ' + data.id)

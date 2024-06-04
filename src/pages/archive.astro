@@ -1,8 +1,6 @@
 ---
-import { getArchive } from '../core/archive'
-import Layout         from '../layouts/Layout.astro'
-
-const index = await getArchive()
+import archive from '../data/archive'
+import Layout  from '../layouts/Layout.astro'
 ---
 
 <Layout title={'Archive'}>
@@ -13,7 +11,7 @@ const index = await getArchive()
       </small>
       <h1>Archive</h1>
     </header>
-    { index.map(v =>
+    { archive.map(v =>
       <a href={'/' + v.i}>
         <time datetime={v.dt}>{v.at}</time>
         <i>{v.i}</i>

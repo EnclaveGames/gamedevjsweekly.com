@@ -1,8 +1,6 @@
 ---
-import { getArchive } from '../core/archive'
-import Layout         from '../layouts/Layout.astro'
-
-const index = (await getArchive()).slice(0, 10)
+import archive from '../data/archive'
+import Layout  from '../layouts/Layout.astro'
 ---
 
 <Layout>
@@ -47,7 +45,7 @@ const index = (await getArchive()).slice(0, 10)
 		<section class=l-s>
 			<h2>Archive</h2>
 			<div id=m-i>
-				{ index.map(v =>
+				{ archive.slice(0, 10).map(v =>
 						<a href={'/' + v.i}>
 							<time datetime={v.dt}>{v.at}</time>
 							<i>{v.i}</i>
