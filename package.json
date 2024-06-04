@@ -10,7 +10,7 @@
     "astro": "^4.9.2",
     "async-sema": "^3.1.1",
     "node-html-parser": "^6.1.13",
-    "sass": "npm:sass-embedded@^1",
+    "sass": "^1.77.4",
     "lightningcss": "^1.25.1"
   }
 }

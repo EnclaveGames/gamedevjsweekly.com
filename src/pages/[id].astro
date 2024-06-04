@@ -42,16 +42,21 @@ export async function getStaticPaths() {
   const
     dst = [],
     sem = new Sema(
-      4,
+      5,
       {
         capacity: 32
       }
   )
 
+  // TODO(alcore) Ideally we'd love to avoid this, but it's currently unclear whether Cloudflare Pages will
+  // restore a cache over conflicting entries or not.
+  const buildCache = 'node_modules/.astro'
+  fs.cpSync('.archive', buildCache, {recursive: true})
+
   for (let i = 0; i < archive.length; i++) {
     const
       data = archive[i],
-      path = '.cache/' + data.i +'.html'
+      path = buildCache + '/' + data.i +'.html'
 
     try {
       dst.push(entry(data, fs.readFileSync(path)))
