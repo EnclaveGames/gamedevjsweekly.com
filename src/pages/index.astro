@@ -1,7 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro'
-
 import { getArchive } from '../core/archive'
+import Layout         from '../layouts/Layout.astro'
 
 const index = (await getArchive()).slice(0, 10)
 ---
