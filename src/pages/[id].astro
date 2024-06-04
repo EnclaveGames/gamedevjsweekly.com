@@ -1,0 +1,128 @@
+---
+import { parse } from 'node-html-parser'
+import fs        from 'node:fs'
+import { Sema }  from 'async-sema'
+
+import { getArchive } from '../core/archive'
+import Layout         from '../layouts/Layout.astro'
+
+export async function getStaticPaths() {
+  function preclean(src) {
+    return src
+        .replace(/ ((style|target)="([^"]*)")|([?&]utm_source=gamedevjsweekly&utm_medium=email)/gi, '')
+        // Collapse consecutive whitespace characters into a single space.
+        .replace(/\s+/gm, ' ')
+        // (Unsafe) Remove whitespace between tags.
+        .replace(/>\s*?</gm, '><')
+        // Replace `href="https://` prefixes with protocol-relative prefixes.
+        .replace(/f="https:\/\//gi, 'f="//')
+        // Clean up `<br> &nbsp;</p>
+        .replace(/<br> &nbsp;<\/p>/gi, '</p>')
+        // Clean up `<h4>Games:</h4>`, removing the colons and replacing any encountered heading with <h2>
+        .replace(/<h\d>(.*?)<\/h\d>/gi, (_, c1) => `<h2>${c1[c1.length - 1] === ':' ? c1.slice(0, -1) : c1}</h2>`)
+        // Remove surrounding whitespace.
+        .trim()
+  }
+
+  function entry(meta, content) {
+    return {
+      params: {
+        id: meta.i
+      },
+      props: {
+        title:   meta.title,
+        image:   meta.image,
+        dt:      meta.dt,
+        at:      meta.at,
+        content
+      }
+    }
+  }
+
+  const src = await getArchive()
+  const dst = []
+  const sem = new Sema(
+      5,
+      {
+        capacity: 32
+      }
+  )
+
+  for (let i = 0; i < src.length; i++) {
+    const
+      data = src[i],
+      id = i + 1
+
+    try {
+      dst.push(entry(data, fs.readFileSync('.cache/' + id +'.html')))
+    } catch (_) {
+      dst.push(new Promise(async resolve => {
+        await sem.acquire()
+        const response = await fetch('https://us3.api.mailchimp.com/3.0/campaigns/' + data.id + '/content?fields=archive_html', {
+          headers: {
+            Authorization: import.meta.env.MAILCHIMP_AUTH
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(response.status + ': ' + await response.text())
+        }
+
+        const content = await response.json()
+        const raw = preclean(content.archive_html)
+
+        let root
+        if (data.i < 542) {
+          root = parse(raw).querySelector('.bodyContent div')
+          if (!root) {
+            throw new Error("Failed to parse " + data.i + ' | ' + data.id)
+          }
+        } else {
+          // Ender decided to change up the template here, but didn't take into account that the content is no longer
+          // uniquely targetable.
+          let parents = parse(raw).querySelectorAll('.mcnTextContent')
+          if (parents.length !== 3) {
+            throw new Error("Failed to parse " + data.i + ' | ' + data.id)
+          }
+
+          root = parents[1]
+        }
+
+        const nodes = root.childNodes
+
+        // TODO(alcore) Older issues would need some manual reconciliation here. While <h4> is the first node in their
+        // case, too, some of them have the entire content wrapped in a <footer> for some reason (for example, that's
+        // the case for the first issue).
+        if (nodes[0].rawTagName === 'h2' && nodes[1].rawTagName === 'p') {
+          // Entirely remove the `<h4>Issue #437 - May 20th 2022</h4>` header along with the intro note, *assuming*
+          // it's them, since we have no other way to differentiate.
+          root.childNodes = nodes.slice(2)
+        }
+
+        const cached = root.innerHTML
+        fs.writeFileSync('.cache/' + id + '.html', cached)
+
+        sem.release()
+
+        resolve(entry(data, cached))
+      }))
+    }
+  }
+
+  return Promise.all(dst)
+}
+
+---
+
+<Layout title={ Astro.props.title + ' | Issue #' + Astro.params.id} image={ Astro.props.image }>
+  <main id=i class=l-c>
+    <header id=p-h>
+      <small>
+        <time datetime={Astro.props.dt}>{Astro.props.at}</time>
+        — issue #{Astro.params.id}
+      </small>
+      <h1>{ Astro.props.title }</h1>
+    </header>
+    <Fragment set:html={ Astro.props.content } />
+  </main>
+</Layout>

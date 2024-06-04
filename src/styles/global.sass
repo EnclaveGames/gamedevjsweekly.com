@@ -1,0 +1,304 @@
+@import config
+
+*
+  box-sizing: border-box
+  margin: 0
+  outline-color: transparent // Prevents focus rings animating in from black defaults.
+
+html
+  font: #{$u-unit}/1.5 $t-prose
+  color: $g-color-shade-90
+  text-underline-offset: 2px
+
+h1
+  font: $t-wgt-bold #{$u-largest}/1 $t-prose
+h2
+  margin: $g-g 0 $g-grid-gutter-single
+  font: $t-wgt-bold $u-larger $t-prose
+p
+  margin: $g-grid-gutter-single 0
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Interactive
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+%i
+  @extend %i-cursor-pointer
+  @extend %a-t-fast
+
+// Interactive / Links
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+a
+  color: var(--c)
+  text-decoration: none
+
+  &:hover
+    color: var(--c-h, $g-color-brand-50)
+
+p a
+  --c: #{$g-color-brand-60}
+  --c-h: #{$g-color-shade-90}
+  font-weight: $t-wgt-bold
+  text-decoration: underline $g-color-shade-20
+  text-decoration-thickness: 2px
+  &:hover
+    text-decoration-color: $g-color-highlight
+
+// Interactive / Buttons
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+.i-b
+  padding: $g-grid-gutter-min $g-grid-gutter-single
+  font: $t-wgt-semibold 1em/24px $t-prose
+  color: #fff
+  background: var(--i-c, $g-color-highlight)
+  border: 0
+  @extend %g-border-radius-large
+  @extend %i
+
+  &:hover
+    background: var(--i-h, $g-color-brand-50)
+    color: #fff
+
+a.i-b
+  --i-c: #{$g-color-brand-50}
+  --i-h: #{$g-color-shade-60}
+  display: block
+  width: 200px
+  margin: $g-grid-gutter auto
+  text-align: center
+
+// Interactive / Forms
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+label
+  @extend %i
+
+input
+  width: 100%
+  font: $u-unit $t-prose
+  padding: $g-grid-gutter-min $g-grid-gutter-single
+  border: 2px solid $g-color-shade-20
+  @extend %g-border-radius-large
+
+::placeholder
+  color: $g-color-shade-50
+\:focus, :hover:not(:user-invalid)
+  border-color: $g-color-brand-50
+\:focus-visible
+  outline: 5px solid $g-color-brand-20
+\:user-invalid
+  border: 2px solid #f53
+  outline: 5px solid #fdd
+\:autofill
+  box-shadow: 0 0 0 $g-g #fff inset
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Global elements
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+// Nav
+#g-n
+  padding-block: $g-grid-gutter
+  &-n
+    a
+      padding: $g-grid-gutter-single
+      font-weight: $t-wgt-bold
+
+#logo
+  margin-right: auto
+  width: 120px
+
+// Projects
+#g-p
+  display: grid
+  text-align: center
+  font-weight: $t-wgt-bold
+  gap: $g-g 2 * $g-g
+
+  img
+    margin-bottom: $g-grid-gutter
+
+// Footer
+#g-f
+  padding-block: $g-g
+  gap: $g-grid-gutter-single
+  background: $g-color-shade-5
+  text-align: center
+  label
+    font: $t-wgt-bold $u-larger $t-prose
+  form
+    width: 100%
+    max-width: 480px
+
+#g-l
+  padding-block: $g-grid-gutter-single
+  font: $u-smaller $t-prose
+  color: $g-color-shade-50
+  background: $g-color-shade-100
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Page elements
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+// Page / Hero header
+#p-h
+  margin: $g-g 0
+
+  small
+    font: $t-wgt-bold $u-smaller $t-prose
+    color: $g-color-shade-40
+    letter-spacing: 2px
+    text-transform: uppercase
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Modules
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+// Module / Home
+#m-h #p-h
+  svg
+    display: none
+  form
+    margin-top: $g-grid-gutter
+
+// Module / Archive
+#m-i
+  time, i
+    font: $t-wgt-bold #{$u-smaller}/2 $t-prose
+
+  time
+    flex: 0 0 90px
+    letter-spacing: 1px
+  i
+    display: none
+    gap: 3px
+    flex: 0 0 60px
+    &:before
+      content: '#'
+      font: $u-large $t-prose
+      color: $g-color-shade-10
+
+  span
+    font-weight: $t-wgt-bold
+    color: $g-color-brand-60
+    text-decoration: underline $g-color-shade-20
+    text-decoration-thickness: 2px
+
+  a
+    display: flex
+    padding: $g-grid-gutter-min 0
+    color: $g-color-shade-40
+    &:hover
+      color: $g-color-shade-90
+      :before
+        color: $g-color-highlight
+      span
+        color: $g-color-shade-90
+        text-decoration-color: $g-color-highlight
+
+// Module / Archive / Issue
+#i
+  p
+    margin-bottom: $g-grid-gutter
+  span
+    font-size: $u-smaller
+    color: $g-color-shade-50
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Layout / Container
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+.l-c
+  max-width: $g-layout-width-content
+  margin: 0 auto
+  padding: 0 $g-layout-margin-horizontal
+
+.l-s
+  margin: 2 * $g-g auto
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Layout / Flexbox / Helpers
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+.f, %f
+  display: flex
+  &-ac
+    @extend %f
+    align-items: center
+  &-c
+    @extend .f-ac
+    justify-content: center
+  &-jsb
+    @extend %f
+    justify-content: space-between
+  &-col
+    @extend %f
+    flex-direction: column
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Layout / Gaps
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Note: These are declared after flex and grid layouts, as they are meant as overrides.
+
+.l
+  &-gap-1
+    gap: $g-grid-gutter-min
+  &-gap-2
+    gap: $g-grid-gutter-single
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Media queries
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+@media (min-width: $g-layout-break-s)
+  #logo
+    width: 200px
+
+
+@media (min-width: $g-layout-break-sm)
+  #g-p
+    h2
+      grid-column: span 3
+
+  #m-i
+    i
+      display: flex
+
+  #m-h #p-h
+    display: grid
+    grid: 1fr / 1.5fr 1fr
+    gap: $g-g
+    svg
+      display: revert
+
+
+@media (min-width: $g-layout-break-f)
+  .l-c
+    padding: 0
+
+
+
+// ~ -------------------------------------------------------------------------------------------------------------------
+// Transitions
+// ~ -------------------------------------------------------------------------------------------------------------------
+
+a, :before, span, input
+  @extend %a-t-fast

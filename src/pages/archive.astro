@@ -1,0 +1,24 @@
+---
+import { getArchive } from '../core/archive'
+import Layout         from '../layouts/Layout.astro'
+
+const index = await getArchive()
+---
+
+<Layout title={'Archive'}>
+  <main id=m-i class=l-c>
+    <header id=p-h>
+      <small>
+        Weekly issues
+      </small>
+      <h1>Archive</h1>
+    </header>
+    { index.map(v =>
+      <a href={'/' + v.i}>
+        <time datetime={v.dt}>{v.at}</time>
+        <i>{v.i}</i>
+        <span>{v.title}</span>
+      </a>
+    ) }
+  </main>
+</Layout>
