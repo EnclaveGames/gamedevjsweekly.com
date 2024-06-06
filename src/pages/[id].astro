@@ -1,117 +1,21 @@
 ---
-import { parse } from 'node-html-parser'
-import fs        from 'node:fs'
-import { Sema }  from 'async-sema'
-
 import archive from '../data/archive'
 import Layout  from '../layouts/Layout.astro'
 
-export async function getStaticPaths() {
-  function preclean(src) {
-    return src
-      .replace(/ ((style|target)="([^"]*)")|([?&]utm_source=gamedevjsweekly&utm_medium=email)/gi, '')
-      // Collapse consecutive whitespace characters into a single space.
-      .replace(/\s+/gm, ' ')
-      // (Unsafe) Remove whitespace between tags.
-      .replace(/>\s*?</gm, '><')
-      // Replace `href="https://` prefixes with protocol-relative prefixes.
-      .replace(/f="https:\/\//gi, 'f="//')
-      // Clean up `<br> &nbsp;</p>
-      .replace(/<br> &nbsp;<\/p>/gi, '</p>')
-      // Clean up `<h4>Games:</h4>`, removing the colons and replacing any encountered heading with <h2>
-      .replace(/<h\d>(.*?)<\/h\d>/gi, (_, c1) => `<h2>${c1[c1.length - 1] === ':' ? c1.slice(0, -1) : c1}</h2>`)
-      // Remove surrounding whitespace.
-      .trim()
-  }
-
-  function entry(meta, content) {
-    return {
-      params: {
-        id: meta.i
-      },
-      props: {
-        title: meta.title,
-        image: meta.image,
-        dt:    meta.dt,
-        at:    meta.at,
-        content
-      }
+export function getStaticPaths() {
+  return Promise.all(archive.map(async v => ({
+    params: {
+      id: v.i + ''
+    },
+    props: {
+      title:   v.title,
+      image:   v.image,
+      dt:      v.dt,
+      at:      v.at,
+      content: await (v.content)
     }
-  }
-
-  const
-    dst = [],
-    sem = new Sema(
-      5,
-      {
-        capacity: 32
-      }
-  )
-
-  // TODO(alcore) Ideally we'd love to avoid this, but it's currently unclear whether Cloudflare Pages will
-  // restore a cache over conflicting entries or not.
-  const buildCache = 'node_modules/.astro'
-  fs.cpSync('.archive', buildCache, {recursive: true})
-
-  for (let i = 0; i < archive.length; i++) {
-    const
-      data = archive[i],
-      path = buildCache + '/' + data.i +'.html'
-
-    try {
-      dst.push(entry(data, fs.readFileSync(path)))
-    } catch (_) {
-      dst.push(sem.acquire().then(async _ => {
-        const res = await fetch('https://us3.api.mailchimp.com/3.0/campaigns/' + data.id + '/content?fields=archive_html', {
-          headers: {
-            Authorization: import.meta.env.MAILCHIMP_AUTH
-          }
-        })
-
-        sem.release()
-
-        if (!res.ok) {
-          throw new Error(res.status + ': ' + await res.text())
-        }
-
-        const body = preclean((await res.json()).archive_html)
-
-        // There's a template change at issue #542 and content is no longer uniquely targetable,
-        // which requires a split approach.
-        let root
-        if (data.i < 542) {
-          root = parse(body).querySelector('.bodyContent div')
-          if (!root) {
-            throw new Error('Failed to parse ' + data.i + ' | ' + data.id)
-          }
-        } else {
-          let parents = parse(body).querySelectorAll('.mcnTextContent')
-          if (parents.length !== 3) {
-            throw new Error('Failed to parse ' + data.i + ' | ' + data.id)
-          }
-
-          root = parents[1]
-        }
-
-        const nodes = root.childNodes
-        if (nodes[0].rawTagName === 'h2' && nodes[1].rawTagName === 'p') {
-          // Entirely remove the `<h4>Issue #437 - May 20th 2022</h4>` header along with the intro note, *assuming*
-          // it's them, since we have no other way to differentiate.
-          root.childNodes = nodes.slice(2)
-        }
-
-        const cached = root.innerHTML
-
-        fs.writeFileSync(path, cached)
-
-        return entry(data, cached)
-      }))
-    }
-  }
-
-  return Promise.all(dst)
+  })))
 }
-
 ---
 
 <Layout title={ Astro.props.title + ' | Issue #' + Astro.params.id} image={ Astro.props.image }>
