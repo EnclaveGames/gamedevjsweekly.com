@@ -15,8 +15,12 @@ h1
 h2
   margin: $g-g 0 $g-grid-gutter-single
   font: $t-wgt-bold $u-larger $t-prose
+
 p
   margin: $g-grid-gutter-single 0
+
+svg
+  display: block
 
 
 
@@ -110,9 +114,8 @@ input
       padding: $g-grid-gutter-single
       font-weight: $t-wgt-bold
 
-#logo
-  margin-right: auto
-  width: 120px
+#logo-text
+  width: 0
 
 // Projects
 #g-p
@@ -269,9 +272,8 @@ input
 // ~ -------------------------------------------------------------------------------------------------------------------
 
 @media (min-width: $g-layout-break-s)
-  #logo
-    width: 200px
-
+  #logo-text
+    width: auto
 
 @media (min-width: $g-layout-break-sm)
   #g-p
