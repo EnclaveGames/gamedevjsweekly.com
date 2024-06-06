@@ -9,19 +9,19 @@ import Layout  from '../layouts/Layout.astro'
 export async function getStaticPaths() {
   function preclean(src) {
     return src
-        .replace(/ ((style|target)="([^"]*)")|([?&]utm_source=gamedevjsweekly&utm_medium=email)/gi, '')
-        // Collapse consecutive whitespace characters into a single space.
-        .replace(/\s+/gm, ' ')
-        // (Unsafe) Remove whitespace between tags.
-        .replace(/>\s*?</gm, '><')
-        // Replace `href="https://` prefixes with protocol-relative prefixes.
-        .replace(/f="https:\/\//gi, 'f="//')
-        // Clean up `<br> &nbsp;</p>
-        .replace(/<br> &nbsp;<\/p>/gi, '</p>')
-        // Clean up `<h4>Games:</h4>`, removing the colons and replacing any encountered heading with <h2>
-        .replace(/<h\d>(.*?)<\/h\d>/gi, (_, c1) => `<h2>${c1[c1.length - 1] === ':' ? c1.slice(0, -1) : c1}</h2>`)
-        // Remove surrounding whitespace.
-        .trim()
+      .replace(/ ((style|target)="([^"]*)")|([?&]utm_source=gamedevjsweekly&utm_medium=email)/gi, '')
+      // Collapse consecutive whitespace characters into a single space.
+      .replace(/\s+/gm, ' ')
+      // (Unsafe) Remove whitespace between tags.
+      .replace(/>\s*?</gm, '><')
+      // Replace `href="https://` prefixes with protocol-relative prefixes.
+      .replace(/f="https:\/\//gi, 'f="//')
+      // Clean up `<br> &nbsp;</p>
+      .replace(/<br> &nbsp;<\/p>/gi, '</p>')
+      // Clean up `<h4>Games:</h4>`, removing the colons and replacing any encountered heading with <h2>
+      .replace(/<h\d>(.*?)<\/h\d>/gi, (_, c1) => `<h2>${c1[c1.length - 1] === ':' ? c1.slice(0, -1) : c1}</h2>`)
+      // Remove surrounding whitespace.
+      .trim()
   }
 
   function entry(meta, content) {
