@@ -40,7 +40,7 @@ export default defineConfig({
             removeRedundantAttributes:     true,
             removeScriptTypeAttributes:    true,
             removeStyleLinkTypeAttributes: true,
-            removeEmptyElements:           true,
+            removeEmptyElements:           false,
             removeComments:                true,
             minifyJS:                      false,
             minifyCSS:                     {
