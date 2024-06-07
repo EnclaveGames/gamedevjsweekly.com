@@ -30,7 +30,7 @@ export default defineConfig({
             caseSensitive:                 true,
             keepClosingSlash:              true,
             collapseBooleanAttributes:     true,
-            collapseInlineTagWhitespace:   true,
+            collapseInlineTagWhitespace:   false,
             collapseWhitespace:            true,
             minifyURLs:                    true,
             quoteCharacter:                "'",
