@@ -1,20 +1,21 @@
 @import config
 
 *
-  box-sizing: border-box
   margin: 0
   outline-color: transparent // Prevents focus rings animating in from black defaults.
 
 html
   font: #{$u-unit}/1.5 $t-prose
   color: $g-color-shade-90
-  text-underline-offset: 2px
 
 h1
   font: $t-wgt-bold #{$u-largest}/1 $t-prose
 h2
   margin: $g-g 0 $g-grid-gutter-single
-  font: $t-wgt-bold $u-larger $t-prose
+  font: $t-wgt-bold #{$u-larger}/1 $t-prose
+h3
+  margin: $g-grid-gutter 0 $g-grid-gutter-single
+  font: #{$u-large}/1 $t-prose
 
 p
   margin: $g-grid-gutter-single 0
@@ -27,17 +28,13 @@ svg
 // ~ -------------------------------------------------------------------------------------------------------------------
 // Interactive
 // ~ -------------------------------------------------------------------------------------------------------------------
-
-%i
-  @extend %i-cursor-pointer
-  @extend %a-t-fast
-
 // Interactive / Links
 // ~ -------------------------------------------------------------------------------------------------------------------
 
 a
   color: var(--c)
   text-decoration: none
+  text-underline-offset: 2px
 
   &:hover
     color: var(--c-h, $g-color-brand-50)
@@ -71,18 +68,21 @@ a.i-b
   --i-c: #{$g-color-brand-50}
   --i-h: #{$g-color-shade-60}
   display: block
-  width: 200px
+  width: 6 * $g-grid-gutter
   margin: $g-grid-gutter auto
   text-align: center
 
 // Interactive / Forms
 // ~ -------------------------------------------------------------------------------------------------------------------
 
+form
+  margin-top: $g-grid-gutter
+
 label
-  @extend %i
+  @extend %i-cursor-pointer
 
 input
-  width: 100%
+  flex: 1
   font: $u-unit $t-prose
   padding: $g-grid-gutter-min $g-grid-gutter-single
   border: 2px solid $g-color-shade-20
@@ -120,30 +120,22 @@ input
 // Projects
 #g-p
   display: grid
+  gap: $g-g
   text-align: center
-  font-weight: $t-wgt-bold
-  gap: $g-g 2 * $g-g
-
-  img
-    margin-bottom: $g-grid-gutter
 
 // Footer
 #g-f
-  padding-block: $g-g
-  gap: $g-grid-gutter-single
   background: $g-color-shade-5
-  text-align: center
-  label
-    font: $t-wgt-bold $u-larger $t-prose
-  form
-    width: 100%
-    max-width: 480px
 
-#g-l
-  padding-block: $g-grid-gutter-single
-  font: $u-smaller $t-prose
-  color: $g-color-shade-50
-  background: $g-color-shade-100
+  form
+    width: min(100% - $g-grid-gutter, 480px)
+    margin: $g-grid-gutter-single 0 $g-g
+
+  // #g-f-n / Footer / Legal footnote
+  &-n
+    font: #{$u-smaller}/4 $t-prose
+    color: $g-color-shade-50
+    background: $g-color-shade-100
 
 
 
@@ -168,17 +160,14 @@ input
 // ~ -------------------------------------------------------------------------------------------------------------------
 
 // Module / Home
-#m-h #p-h
+#m-h
   svg
     display: none
-  form
-    margin-top: $g-grid-gutter
 
 // Module / Archive
 #m-i
   time, i
     font: $t-wgt-bold #{$u-smaller}/2 $t-prose
-
   time
     flex: 0 0 90px
     letter-spacing: 1px
@@ -190,13 +179,11 @@ input
       content: '#'
       font: $u-large $t-prose
       color: $g-color-shade-10
-
   span
     font-weight: $t-wgt-bold
     color: $g-color-brand-60
     text-decoration: underline $g-color-shade-20
     text-decoration-thickness: 2px
-
   a
     display: flex
     padding: $g-grid-gutter-min 0
@@ -214,7 +201,7 @@ input
   p
     margin-bottom: $g-grid-gutter
   span
-    font-size: $u-smaller
+    font: $u-smaller $t-prose
     color: $g-color-shade-50
 
 
@@ -224,9 +211,9 @@ input
 // ~ -------------------------------------------------------------------------------------------------------------------
 
 .l-c
-  max-width: $g-layout-width-content
-  margin: 0 auto
-  padding: 0 $g-layout-margin-horizontal
+  max-width: $g-layout-break-sm
+  margin-inline: auto
+  padding: 0 $g-grid-gutter-single
 
 .l-s
   margin: 2 * $g-g auto
@@ -284,17 +271,13 @@ input
     i
       display: flex
 
-  #m-h #p-h
-    display: grid
-    grid: 1fr / 1.5fr 1fr
-    gap: $g-g
+  #m-h
+    #p-h
+      display: grid
+      grid: 1fr / 1.5fr 1fr
+      gap: $g-g
     svg
-      display: revert
-
-
-@media (min-width: $g-layout-break-f)
-  .l-c
-    padding: 0
+      display: block
 
 
 

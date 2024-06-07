@@ -18,14 +18,9 @@ $g-grid-gutter:        2 * $g-grid-gutter-single
 $g-grid-gutter-gap:    2 * $g-grid-gutter
 $g-g:                  $g-grid-gutter-gap // Utility shorthand for 'global grid gutter gap', retaining the 'global' prefix.
 
-$g-layout-margin-horizontal:  $g-grid-gutter-single
-
 // Breakpoints
 $g-layout-break-s:  420px
 $g-layout-break-sm: 768px
-
-$g-layout-width-content: $g-layout-break-sm
-$g-layout-break-f:       $g-layout-width-content + $g-layout-margin-horizontal
 
 // ~ -------------------------------------------------------------------------------------------------------------------
 // Type
@@ -57,33 +52,24 @@ $g-color-brand-60: #7cacd1
 
 $g-color-highlight: #fd1
 
-
 // ~ -------------------------------------------------------------------------------------------------------------------
 // Borders
 // ~ -------------------------------------------------------------------------------------------------------------------
 
-$g-border-radius-large: 20px
-
 %g-border-radius-large
-  border-radius: $g-border-radius-large
-
-
+  border-radius: 20px
 
 // ~ -------------------------------------------------------------------------------------------------------------------
 // Helpers
 // ~ -------------------------------------------------------------------------------------------------------------------
 
+%i
+  @extend %i-cursor-pointer
+  @extend %a-t-fast
+
 %i-cursor-pointer
   cursor: pointer
   user-select: none
-
-%i-pointer-none
-  pointer-events: none
-
-%i-select-none
-  user-select: none
-
-
 
 // ~ -------------------------------------------------------------------------------------------------------------------
 // Animations / Transitions
