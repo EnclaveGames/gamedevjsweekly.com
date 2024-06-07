@@ -18,15 +18,19 @@ export function getStaticPaths() {
 }
 ---
 
-<Layout title={ Astro.props.title + ' | Issue #' + Astro.params.id} image={ Astro.props.image }>
+<Layout
+  title={Astro.props.title}
+  image={Astro.props.image}
+  desc={'Check out issue #' + Astro.params.id + ' of Gamedev.js Weekly — the free, weekly newsletter about web game development.'}
+>
   <main id=i class=l-c>
     <header id=p-h>
       <small>
         <time datetime={Astro.props.dt}>{Astro.props.at}</time>
         — issue #{Astro.params.id}
       </small>
-      <h1>{ Astro.props.title }</h1>
+      <h1>{Astro.props.title}</h1>
     </header>
-    <Fragment set:html={ Astro.props.content } />
+    <Fragment set:html={Astro.props.content} />
   </main>
 </Layout>

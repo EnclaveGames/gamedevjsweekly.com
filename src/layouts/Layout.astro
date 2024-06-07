@@ -1,16 +1,17 @@
 ---
 import '../styles/global.sass'
 
-const { title, image } = Astro.props
+const { title, desc, image } = Astro.props
 ---
 <!doctype html>
 <html lang=en>
 <head>
   <title>{(title ? title + ' | ' : '') + 'Gamedev.js Weekly'}</title>
-  <meta name=description content='Subscribe to the free, weekly newsletter about web game development. Curated by Andrzej Mazur, creator of the js13kGames competition.'>
+  <meta name=description content={desc || 'Subscribe to the free, weekly newsletter about web game development. Curated by Andrzej Mazur, creator of the js13kGames competition.'}>
   <meta name=viewport content='width=device-width'>
   <meta name=theme-color content=#9bd>
   <meta property=og:site_name content='Gamedev.js Weekly'>
+  <meta property=og:title content={title || 'Gamedev.js Weekly'}>
   {image &&
       <meta property=og:type content=article>
       <meta property=og:image content={image}>
