@@ -3,7 +3,7 @@ import archive from '../data/archive'
 import Layout  from '../layouts/Layout.astro'
 
 export function getStaticPaths() {
-  return Promise.all(archive.map(async v => ({
+  return archive.map(v => ({
     params: {
       id: v.i + ''
     },
@@ -12,9 +12,9 @@ export function getStaticPaths() {
       image:   v.image,
       dt:      v.dt,
       at:      v.at,
-      content: await (v.content)
+      content: v.content
     }
-  })))
+  }))
 }
 ---
 
