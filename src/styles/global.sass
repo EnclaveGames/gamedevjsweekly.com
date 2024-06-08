@@ -17,6 +17,9 @@ h3
   margin: $g-grid-gutter 0 $g-grid-gutter-single
   font: #{$u-large}/1 $t-prose
 
+b, strong
+  font-weight: $t-wgt-bold
+
 p
   margin: $g-grid-gutter-single 0
 
@@ -179,8 +182,7 @@ input
       content: '#'
       font: $u-large $t-prose
       color: $g-color-shade-10
-  span
-    font-weight: $t-wgt-bold
+  b
     color: $g-color-brand-60
     text-decoration: underline $g-color-shade-20
     text-decoration-thickness: 2px
@@ -192,7 +194,7 @@ input
       color: $g-color-shade-90
       :before
         color: $g-color-highlight
-      span
+      b
         color: $g-color-shade-90
         text-decoration-color: $g-color-highlight
 
@@ -315,5 +317,5 @@ input
 // Transitions
 // ~ -------------------------------------------------------------------------------------------------------------------
 
-a, :before, span, input
+a, :before, b, input
   @extend %a-t-fast
