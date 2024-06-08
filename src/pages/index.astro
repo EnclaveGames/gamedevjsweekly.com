@@ -14,7 +14,7 @@ import Layout  from '../layouts/Layout.astro'
         </h1>
         <p>
           Join 8000 game developers already subscribed to this weekly, free newsletter. No spam. Open for related
-          <a href=/about#sponsor>sponsorship opportunities and job listings</a>.
+          <a href=about#sponsor>sponsorship opportunities and job listings</a>.
         </p>
         <form target=_blank method=post class='f l-gap-2' action='//gamedevjs.us3.list-manage.com/subscribe/post?u=4ad274b490aa6da8c2d29b775&id=bacab0c8ca'>
           <input id=p-h-e type=email name=EMAIL placeholder='Your email address' autocomplete=email required>
@@ -46,14 +46,14 @@ import Layout  from '../layouts/Layout.astro'
       <h2>Latest issues</h2>
       <div id=m-i>
         { archive.slice(0, 10).map(v =>
-            <a href={'/' + v.i}>
+            <a href={v.i}>
               <time datetime={v.dt}>{v.at}</time>
               <i>{v.i}</i>
               <span>{v.title}</span>
             </a>
         ) }
       </div>
-      <a href=/archive class=i-b>View all issues</a>
+      <a href=archive class=i-b>View all issues</a>
     </section>
 
   </main>

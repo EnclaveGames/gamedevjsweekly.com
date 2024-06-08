@@ -12,7 +12,7 @@ import Layout  from '../layouts/Layout.astro'
       <h1>Archive</h1>
     </header>
     { archive.map(v =>
-      <a href={'/' + v.i}>
+      <a href={v.i}>
         <time datetime={v.dt}>{v.at}</time>
         <i>{v.i}</i>
         <span>{v.title}</span>
