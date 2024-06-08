@@ -164,7 +164,7 @@ input
   svg
     display: none
 
-// Module / Archive
+// Module / Issues archive
 #m-i
   time, i
     font: $t-wgt-bold #{$u-smaller}/2 $t-prose
@@ -196,13 +196,37 @@ input
         color: $g-color-shade-90
         text-decoration-color: $g-color-highlight
 
-// Module / Archive / Issue
+// Module / Issues archive / View
 #i
   p
     margin-bottom: $g-grid-gutter
   span
     font: $u-smaller $t-prose
     color: $g-color-shade-50
+
+  // #i-n / Prev/next navigation
+  &-n
+    margin: $g-g 0
+    padding: $g-grid-gutter 0 0
+    border-top: 1px solid $g-color-shade-10
+    span
+      display: block
+    a
+      font: $t-wgt-bold #{$u-small}/1.5 $t-prose
+      max-width: 50%
+      &:before, &:after
+        font: $u-largest $t-prose
+        color: $g-color-highlight
+    // #i-n-p / Prev
+    &-p
+      &:before
+        content: "‹"
+    // #i-n-n / Next
+    &-n
+      justify-self: end
+      text-align: right
+      &:after
+        content: "›"
 
 
 
@@ -267,10 +291,6 @@ input
     h2
       grid-column: span 3
 
-  #m-i
-    i
-      display: flex
-
   #m-h
     #p-h
       display: grid
@@ -279,6 +299,16 @@ input
     svg
       display: block
 
+  #m-i
+    i
+      display: flex
+
+@media (min-width: $g-layout-break-sm + 2 * $g-grid-gutter)
+  #i-n
+    &-p
+      margin-left: -1 * $g-grid-gutter
+    &-n
+      margin-right: -1 * $g-grid-gutter
 
 
 // ~ -------------------------------------------------------------------------------------------------------------------

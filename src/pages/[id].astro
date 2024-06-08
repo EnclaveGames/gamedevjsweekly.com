@@ -16,6 +16,12 @@ export function getStaticPaths() {
     }
   }))
 }
+
+const
+  // Note: Order is reversed (newest first), which is why next/prev are inverse, too.
+  idx  = archive.length - Astro.params.id,
+  next = archive[idx - 1],
+  prev = archive[idx + 1]
 ---
 
 <Layout
@@ -31,6 +37,34 @@ export function getStaticPaths() {
       </small>
       <h1>{Astro.props.title}</h1>
     </header>
+
     <Fragment set:html={Astro.props.content} />
+
+    <nav id=i-n class=f-jsb>
+      { prev
+        ? <a id=i-n-p rel=prev href={prev.i} class='f l-gap-2'>
+            <div>
+              <span>Issue {prev.i}</span>
+              {prev.title}
+            </div>
+          </a>
+        : <i />
+      }
+      { next
+        ? <a id=i-n-n rel=next href={next.i} class='f l-gap-2'>
+            <div>
+                <span>Issue {next.i}</span>
+                {next.title}
+            </div>
+          </a>
+        : <i />
+      }
+      <script>
+        onkeyup = e => {
+          e.key === 'ArrowLeft'  && document.getElementById("i-n-p")?.click()
+          e.key === 'ArrowRight' && document.getElementById("i-n-n")?.click()
+        }
+      </script>
+    </nav>
   </main>
 </Layout>
