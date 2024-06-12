@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 import { defineConfig } from 'astro/config'
+import sitemap          from '@astrojs/sitemap'
 import { minify }       from 'html-minifier-terser'
 
 // https://astro.build/config
@@ -17,7 +18,7 @@ export default defineConfig({
       cssMinify: 'lightningcss'
     }
   },
-  integrations: [{
+  integrations: [sitemap(), {
     name: 'gdjs:post:minify',
     hooks: {
       'astro:build:done': ({ dir, pages }) => Promise.all(pages.map(v => {
