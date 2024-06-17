@@ -12,10 +12,14 @@ const { title, desc, image } = Astro.props
   <meta name=theme-color content=#9bd>
   <meta property=og:site_name content='Gamedev.js Weekly'>
   <meta property=og:title content={title || 'Gamedev.js Weekly'}>
-  {image &&
-      <meta property=og:type content=article>
-      <meta property=og:image content={image}>
-      <meta property=twitter:card content=summary_large_image>
+  {image ?
+    <meta property=og:type content=article>
+    <meta property=og:image content={image}>
+    <meta property=twitter:card content=summary_large_image>
+      :
+    <meta property=og:type content=website>
+    <meta property=og:image content=//gamedevjsweekly.com/gamedevjsweekly.png>
+    <meta property=twitter:card content=summary_large_image>
   }
   <link rel=icon href=/fav.svg>
   <link rel=alternate title='Gamedev.js Weekly' type=application/rss+xml href=feed.xml>
