@@ -1,4 +1,4 @@
-@import config
+@use 'config' as *
 
 *
   margin: 0
@@ -167,6 +167,90 @@ input
   svg
     display: none
 
+// Module / Sponsor
+#m-s
+  ul, ol
+    margin: $g-grid-gutter-single 0
+    padding-left: $g-grid-gutter
+  li
+    margin-bottom: $g-grid-gutter-min
+  a.i-b
+    margin-left: 0
+
+  // #m-s-s / At a glance
+  &-s
+    justify-content: space-between
+    gap: $g-grid-gutter-single
+    margin: $g-g 0
+    padding: $g-grid-gutter 0
+    border-block: 1px solid $g-color-shade-10
+    text-align: center
+    div
+      flex: 1
+    b
+      display: block
+      font: $t-wgt-bold #{$u-larger}/1.5 $t-prose
+    span
+      font: #{$u-small}/1.5 $t-prose
+      color: $g-color-shade-50
+
+  // #m-s-p / Pricing cards
+  &-p
+    display: grid
+    gap: $g-grid-gutter-single
+    article
+      display: flex
+      flex-direction: column
+      padding: $g-grid-gutter
+      border: 2px solid $g-color-shade-10
+      border-radius: 10px
+      &.m-s-f
+        background: $g-color-shade-5
+        border-color: $g-color-brand-20
+    small
+      font: $t-wgt-bold $u-smaller $t-prose
+      letter-spacing: 2px
+      text-transform: uppercase
+      color: $g-color-shade-40
+    strong
+      font: $t-wgt-bold #{$u-largest}/1.5 $t-prose
+      span
+        font: $t-wgt-regular $u-unit $t-prose
+        color: $g-color-shade-50
+    a.i-b
+      margin-top: auto
+      width: auto
+      align-self: flex-start
+
+  // #m-s-n / Campaign note
+  &-n
+    padding: $g-grid-gutter-single $g-grid-gutter
+    border-left: 4px solid $g-color-highlight
+    background: $g-color-shade-5
+
+  // #m-s-d / Example placement
+  &-d
+    padding: $g-grid-gutter-single
+    background: #eef6fe
+    a
+      --c: #4d7a9b
+      --c-h: #{$g-color-shade-90}
+      text-decoration: underline
+    p
+      margin: 0
+      color: $g-color-shade-100
+
+  .m-s-h
+    font: $u-smaller $t-prose
+    color: $g-color-shade-50
+
+  // #m-s-h / How it works
+  &-h
+    list-style: none
+    padding: 0
+    h3
+      margin-top: $g-grid-gutter-single
+
 // Module / Issues archive
 #m-i
   time, i
@@ -304,6 +388,9 @@ input
   #m-i
     i
       display: flex
+
+  #m-s-p
+    grid-template-columns: 1fr 1fr
 
 @media (min-width: $g-layout-break-sm + 2 * $g-grid-gutter)
   #i-n
